@@ -1,5 +1,5 @@
 resource "aws_instance" "iti-ec2" {
-  count         = 4
+  count         = length(var.ec2_config)
   ami           = data.aws_ami.ubuntu.id
   instance_type = var.instance_type
   subnet_id     = aws_subnet.iti-subnet[var.ec2_config[count.index].subnet].id
