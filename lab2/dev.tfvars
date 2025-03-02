@@ -7,7 +7,28 @@ no_public_ec2 = 2
 
 instance_type = "t2.micro"
 
-ec2_names = ["bastion", "Application", "private1", "private2"]
+ec2_config = [
+  {
+    name   = "bastion"
+    subnet = "ITI-Public-SN-1A"
+    type   = "public"
+  },
+  {
+    name   = "Application"
+    subnet = "ITI-Public-SN-1B"
+    type   = "public"
+  },
+  {
+    name   = "private1"
+    subnet = "ITI-Private-SN-1A"
+    type   = "private"
+  },
+  {
+    name   = "private2"
+    subnet = "ITI-Private-SN-1B"
+    type   = "private"
+  }
+]
 
 subnet_list = [
   {

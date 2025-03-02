@@ -15,7 +15,7 @@ variable "instance_type" {
   type = string
 }
 
-variable "ec2_names" {
+variable "ec2_config" {
   type = list(any)
 }
 
