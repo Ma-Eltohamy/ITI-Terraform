@@ -8,7 +8,7 @@ resource "aws_nat_gateway" "iti-nat" {
   allocation_id = aws_eip.iti-elastic-ip.id
 
 
-  subnet_id = aws_subnet.iti-public-sn-1a.id
+  subnet_id = aws_subnet.iti-subnet["ITI-Public-SN-1A"].id
 
   tags = {
     Name = "ITI-NAT"

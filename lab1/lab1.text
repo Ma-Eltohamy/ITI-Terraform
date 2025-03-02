@@ -1,6 +1,5 @@
 Networking
 1- create vpc
-
 2- create internet gateway
 3- create public route table
 4- create private route table

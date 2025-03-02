@@ -1,0 +1,11 @@
+1-restructure your code to use variables
+2-create all subnets with single resource using for_each
+3-make condition on subnet resource based on type (public or private) to control map_public_ip_on_launch
+4-create all ec2s with single resource using count
+5-create two workspaces dev and prod
+6-create two variable definition files(.tfvars) for the two environments
+7-apply your code to create two environments one in us-east-1 and eu-central-1
+8-run local-exec provisioner to print the public_ip of bastion ec2
+9- upload infrastructure code on github project
+10- create rds(mysql) in private subnet
+11- create elastic cache redis in private subnet

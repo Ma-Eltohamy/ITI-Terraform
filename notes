@@ -2,3 +2,141 @@
 mainly because it's cloud ignostic
 
 
+
+((( lecture 2 )))
+
+3 cases:
+
+1) --> importing the already maded resource using terraform import
+
+2) --> if some resources already managed by terraform and you want to make it
+        not managed any more by terraform you can use
+
+        terraform state rm <resource-name>
+
+3) --> if you want to rename some resources 
+        you would think, k it really simple just change the name --> but this would make terrafrom destroy the old infra then building it again
+
+        the next solution is to rename it at the sate file (not recommended to interact with the state file directly)
+
+        but the real one is to use this command
+
+        terraform state mv <resource-name>
+
+you can do the renaming and removing staff with also the code style not the previous one which is (command line style)
+search [remove block terraform], [rename block terraform], [import block terraform] --> this could be usefull when you try to rename or removing multiple resources
+
+
+to list all the resources at the state file
+
+terraform state list
+
+terraform state show <resource-name> to show details about the resoruce
+
+terrafrom state pull & terraform state push (NOTE: push will replace the state file with the wanted one)
+
+graph command is not that cool (so basic and primateive)
+
+terraform fmt --> (use this command to formate the terraform file)
+
+decalaring variables could be in any file with any name ending with .tf
+
+but assigning values to these variables must be at a file called terraform.tfvars
+and if you want to change the terrform file to a specific name you can call this file whatever you want
+but to give this file to terraform you must use 
+
+terraform apply --var-file varsValue.tfvars
+
+
+if you made more that one .tfvars file that holds a specific values for a specific infrastructure you want to build
+first: as known you will specify it while applying --> $ terraform apply --var-file dev.tfvars
+first: as known you will specify it while applying --> $ terraform apply --var-file prod.tfvars
+
+we can't apply this before using or without using the concept of workspaces
+mainly the idea of making .tfvars file is to init spereate infrastructures because of the statefile
+
+workspaces at the begging was called environments
+
+workspaces: is more like the branch concept in git
+
+$ terraform workspace list --> to list all the current available worksapces
+
+$ terraform workspace new <workspace-name> --> to create a new workspace & it will create a file called environment inside the .terraform dir
+
+$ terraform workspace select default --> this will return back you to the default workspace
+
+there's also the concept of outputs that get an output like the public ip address of an instence
+                                      
+                                      <not the resource-name>
+and we can also use $ terraform output <output-name> (which is in the output.tf file) --> you can use it to extract the public ip address for example to use it with ansible
+
+
+--> provisioner
+
+we have two types of provisioner  1) --> local-exec --> execute command on your machine when a after resoruce creation
+                                  2) --> remote-exec --> execute commands on the remote machines via ssh
+
+the null_resource is good for testing or doing a specific task that doesn't relay on anything
+the provisioner is only run once (at the creation process)
+
+
+resource "null_resource" "ls" {
+  provisioner "local-exec" {
+    command = "echo ${self.public_ip} >> inventory" ----> we use ${} to write a variable inside the string
+  }
+}
+
+to make this command runs every time i use apply
+
+$ terraform taint null_resource.ls
+this will make terraform taint this resource to recreate it every time we make apply command
+
+
+NOTICE: we taint the reouces not the provisioner
+
+taint --> untaint ---> to remove the taint from the resource
+
+--------------------------------------------------
+inside the resource block
+--------------------------------------------------
+  provisioner "remote-exec" {
+    inline = [
+      "sudo apt update",
+      "sudo apt install -y nginx"
+    ]
+  }
+
+
+--> count attribute
+
+you can add this attribute at the resource block to tell terraform how many instences you want to create from this resource
+
+count = 0 --> means this resource won't be created
+count = 1 --> create only one instence of this resource
+count = 2 --> create two instences of this resource
+
+${count.index} to use the number of count
+
+examples: 
+
+# variable "ec2-names" {
+#   type = list(any)
+# }
+
+variable "ec2-configs" {
+  type = list(object({
+    ec2-tier = string
+    name     = string
+  }))
+}
+
+ec2-configs = [
+  {
+    ec2-tier = "t2.micro"
+    name     = "Application"
+  },
+  {
+    ec2-tier = "t2.micro"
+    name     = "Fronto"
+  }
+]
