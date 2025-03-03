@@ -1,15 +1,15 @@
 resource "aws_elasticache_subnet_group" "redis_subnet_group" {
   name = "redis-subnet-group"
   subnet_ids = [
-    aws_subnet.iti-subnet["ITI-Private-SN-1A"].id,
-    aws_subnet.iti-subnet["ITI-Private-SN-1B"].id
+    module.network.iti-subnet["ITI-Private-SN-1A"].id,
+    module.network.iti-subnet["ITI-Private-SN-1B"].id
   ]
 }
 
 resource "aws_security_group" "redis_sg" {
   name        = "redis-security-group"
   description = "Allow Redis inbound traffic"
-  vpc_id      = aws_vpc.iti-vpc.id
+  vpc_id      = module.network.iti-vpc.id
 
   ingress {
     from_port   = 6379

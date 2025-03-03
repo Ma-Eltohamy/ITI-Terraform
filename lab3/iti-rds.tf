@@ -1,15 +1,15 @@
 resource "aws_db_subnet_group" "rds_subnet_group" {
   name = "rds_subnet_group"
   subnet_ids = [
-    aws_subnet.iti-subnet["ITI-Private-SN-1A"].id,
-    aws_subnet.iti-subnet["ITI-Private-SN-1B"].id
+    module.network.iti-subnet["ITI-Private-SN-1A"].id,
+    module.network.iti-subnet["ITI-Private-SN-1B"].id
   ]
 }
 
 resource "aws_security_group" "rds_sg" {
   name        = "rds-security-group"
   description = "Allow MySQL inbound traffic"
-  vpc_id      = aws_vpc.iti-vpc.id
+  vpc_id      = module.network.iti-vpc.id
 
   ingress {
     from_port   = 3306

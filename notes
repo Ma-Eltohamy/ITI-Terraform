@@ -140,3 +140,53 @@ ec2-configs = [
     name     = "Fronto"
   }
 ]
+
+--------- modules
+
+to use modules first you will create a dir to contain the modules files
+
+then you will have to make a file let's say mod.tf
+
+and it will contian a block like
+
+
+           --> this would be the name of the module
+          |
+module "network" {
+  source = "./mymodule/"
+
+            --> and all of the remaining part will be the needed inputs for the modules or the vars that this module will need to work
+  ----------|
+  vpc_cidr_block = var.vpc_cidr_block
+
+  region = var.region
+
+  subnet_list = var.subnet_list
+}
+
+but first you will need to declare not assigning a value to these attribues (only declaring it)
+
+how do we decalr vars in terrafrom? --> simply by vars.tf file that containes something similar to this block
+
+
+##############  (only the declaration) ############# and the inputs will be given at and inside the module declaration part
+
+variable "vpc_cidr_block" {
+  type = string
+}
+
+variable "region" {
+  type = string
+}
+
+variable "subnet_list" {
+  type = list(object({
+    name = string
+    cidr = string
+    type = string
+    az   = string
+  }))
+}
+
+and don't forget to make the required outputs and refrence to them
+

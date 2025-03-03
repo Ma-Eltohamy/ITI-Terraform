@@ -1,0 +1,6 @@
+1-separate network resources into network module
+2-verify your email in ses service
+3-create lambda function to send email
+4-create trigger to detect changes in state file and send the email
+in email mention time of change and environment (dev or prod)
+ 
