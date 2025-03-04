@@ -27,12 +27,12 @@ resource "aws_security_group" "redis_sg" {
 }
 
 resource "aws_elasticache_cluster" "redis" {
-  cluster_id                = "my-redis-cluster"
-  engine                    = "redis"
-  node_type                 = "cache.t3.micro"
-  num_cache_nodes           = 1
-  subnet_group_name         = aws_elasticache_subnet_group.redis_subnet_group.name
-  security_group_ids        = [aws_security_group.redis_sg.id]
-  final_snapshot_identifier = "my-redis-final-snapshot"
+  cluster_id               = "my-redis-cluster"
+  engine                   = "redis"
+  node_type                = "cache.t3.micro"
+  num_cache_nodes          = 1
+  subnet_group_name        = aws_elasticache_subnet_group.redis_subnet_group.name
+  security_group_ids       = [aws_security_group.redis_sg.id]
+  snapshot_retention_limit = 0 # Disables final snapshot
 }
 

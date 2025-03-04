@@ -73,3 +73,5 @@ security_groups = {
     ]
   }
 }
+
+domain1 = "<you'r email address>"

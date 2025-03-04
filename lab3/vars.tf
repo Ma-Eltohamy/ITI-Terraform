@@ -43,3 +43,18 @@ variable "security_groups" {
   }))
 }
 
+variable "s3_bucket_name" {
+  default = "terraform-state-bucket-202510"
+}
+
+variable "lambda_function_name" {
+  default = "TerraformStateChangeNotifier"
+}
+
+variable "sender_email" {
+  default = "sender_email@here.com"
+}
+
+variable "recipient_email" {
+  default = "reciver_email@here.com"
+}
